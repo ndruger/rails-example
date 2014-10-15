@@ -2,9 +2,23 @@
 <html>
 <head>
   <title>RailsExample2</title>
+  <%= javascript_include_tag "//code.jquery.com/jquery-2.1.1.min.js" %>
+  <script>
+  
+  $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+    var token;
+    options.xhrFields = {
+      withCredentials: true
+    };
+    token = $('meta[name="csrf-token"]').attr('content');
+    if (token) {
+      return jqXHR.setRequestHeader('X-CSRF-Token', token);
+    }
+  });
+  	
+  </script>
   <%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js" %>
   <%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js" %>
-  <%= javascript_include_tag "//code.jquery.com/jquery-2.1.1.min.js" %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>

@@ -4,17 +4,38 @@
 
 class Friend extends Backbone.Model
   neko: "neko"
+  move: (opts) =>
+    url = this.url() + '/move'
+    options = 
+      url: url
+      type: 'POST'
+    _.extend(options, opts);
+    (@sync || Backbone.sync).call(@, null, @, options);
 
-class FiendC extends Backbone.Collection
+class FriendC extends Backbone.Collection
   model: Friend
-  url: '/fiend'
+  url: '/friends'
+
+
+$.ajaxPrefilter((options, originalOptions, xhr) ->
+  debugger
+)
+
+
+friendC = undefined
+
+test = ->
+  f = friendC.first()
+  f.set('neko', 'test')
+  f.move()
+  console.log(f)
 
 $().ready(=>
   console.log('neko2')
   friendC = new FriendC();
   friendC.fetch(
     success: =>
-      console.log('success')
+      test()
     error: =>
       console.log('error')
   )
